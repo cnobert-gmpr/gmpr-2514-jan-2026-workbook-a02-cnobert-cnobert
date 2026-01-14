@@ -14,6 +14,10 @@ public class IntroGame : Game
 
     private Texture2D _pixel;
 
+    private float _xPosition = 100, _yPosition = 150;
+    private float _speed = 150;
+    private int _width = 80, _height = 50;
+
     public IntroGame()
     {
         _graphics = new GraphicsDeviceManager(this);
@@ -29,7 +33,6 @@ public class IntroGame : Game
     protected override void LoadContent()
     {
         _spriteBatch = new SpriteBatch(GraphicsDevice);
-
         //new texture that is one pixel by one pixel
         _pixel = new Texture2D(GraphicsDevice, 1, 1);
         _pixel.SetData(new [] {Color.White});
@@ -38,6 +41,10 @@ public class IntroGame : Game
     protected override void Update(GameTime gameTime)
     {
         base.Update(gameTime);
+
+        //multiply _speed by the time that has passed since the last call to update
+        //in case there has been lag
+        _xPosition += _speed * (float)gameTime.ElapsedGameTime.TotalSeconds;
     }
 
     protected override void Draw(GameTime gameTime)
@@ -47,7 +54,8 @@ public class IntroGame : Game
         //all draw commands should always be with the spritebatch begin and end
         _spriteBatch.Begin();
 
-        Rectangle rect = new Rectangle(100, 150, 80, 50);
+        Rectangle rect = new Rectangle((int)_xPosition, (int)_yPosition, _width, _height);
+
         _spriteBatch.Draw(_pixel, rect, Color.White);
         
         _spriteBatch.End();
