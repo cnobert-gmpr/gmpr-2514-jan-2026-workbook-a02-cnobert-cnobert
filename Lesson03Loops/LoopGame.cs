@@ -31,7 +31,7 @@ public class LoopGame : Game
         _count = 6;
         _spacing = 10;
 
-        _rectangles = new Rectangle[_count];
+        _rectangles = new Rectangle[_count]; 
 
         for(int c = 0; c < _count; c++)
         {
