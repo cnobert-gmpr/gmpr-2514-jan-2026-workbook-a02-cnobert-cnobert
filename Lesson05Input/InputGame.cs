@@ -68,7 +68,7 @@ public class InputGame : Game
         // "||" in c# means "or" in python
         //if(_kbPreviousState.IsKeyUp(Keys.Space) && _kbCurrentState.IsKeyDown(Keys.Space))
         if(IsKeyPressed(Keys.Space))
-        {
+        { 
             _message += "\n";
             _message += "Space pressed\n";
             _message += "-------------------------------------------------\n";
