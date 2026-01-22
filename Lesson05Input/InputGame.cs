@@ -66,18 +66,45 @@ public class InputGame : Game
         #endregion
         // "&&" in c#  means "and" in python
         // "||" in c# means "or" in python
-        if(_kbPreviousState.IsKeyUp(Keys.Space) && _kbCurrentState.IsKeyDown(Keys.Space))
+        //if(_kbPreviousState.IsKeyUp(Keys.Space) && _kbCurrentState.IsKeyDown(Keys.Space))
+        if(IsKeyPressed(Keys.Space))
         {
             _message += "\n";
             _message += "Space pressed\n";
-            _message += "----------------------------------------\n";
-            _message += "----------------------------------------\n";
-            _message += "----------------------------------------\n";
-            _message += "----------------------------------------\n";
-            _message += "----------------------------------------\n";
-            _message += "----------------------------------------\n";
-            _message += "----------------------------------------\n";
+            _message += "-------------------------------------------------\n";
+            _message += "-------------------------------------------------\n";
+            _message += "-------------------------------------------------\n";
+            _message += "-------------------------------------------------\n";
+            _message += "-------------------------------------------------\n";
+            _message += "-------------------------------------------------\n";
+            _message += "-------------------------------------------------\n";
+            _message += "-------------------------------------------------\n";
+
         }
+        else if(_kbCurrentState.IsKeyDown(Keys.Space))
+        {
+            _message += "\n";
+            _message += "Space held";
+        }
+        else if (_kbPreviousState.IsKeyDown(Keys.Space))
+        {
+            _message += "\n";
+            _message += "Space released";
+            _message += "+++++++++++++++++++++++++++++++++++++++++\n";
+            _message += "+++++++++++++++++++++++++++++++++++++++++\n";
+            _message += "+++++++++++++++++++++++++++++++++++++++++\n";
+            _message += "+++++++++++++++++++++++++++++++++++++++++\n";
+            _message += "+++++++++++++++++++++++++++++++++++++++++\n";
+            _message += "+++++++++++++++++++++++++++++++++++++++++\n";
+            _message += "+++++++++++++++++++++++++++++++++++++++++\n";
+            _message += "+++++++++++++++++++++++++++++++++++++++++\n";
+            _message += "+++++++++++++++++++++++++++++++++++++++++\n";
+            _message += "+++++++++++++++++++++++++++++++++++++++++\n";
+            _message += "+++++++++++++++++++++++++++++++++++++++++\n";
+            _message += "+++++++++++++++++++++++++++++++++++++++++\n";
+            _message += "+++++++++++++++++++++++++++++++++++++++++\n";
+        }
+
 
         _kbPreviousState = _kbCurrentState;
         base.Update(gameTime);
@@ -92,5 +119,14 @@ public class InputGame : Game
         _spriteBatch.End();
 
         base.Draw(gameTime);
+    }
+
+    private bool IsKeyHeld(Keys key)
+    {
+        return _kbCurrentState.IsKeyDown(key);
+    }
+    private bool IsKeyPressed(Keys key)
+    {
+        return _kbPreviousState.IsKeyUp(key) && _kbCurrentState.IsKeyDown(key);
     }
 }
