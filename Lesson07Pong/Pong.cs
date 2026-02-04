@@ -7,17 +7,28 @@ namespace Lesson07Pong;
 public class Pong : Game
 {
     private const int _WindowWidth = 750, _WindowHeight = 450, _BallWidthAndHeight = 21;
+    
+    private const int _PlayAreaEdgeLineWidth = 12;
 
     private GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
 
     private Texture2D _backgroundTexture, _ballTexture;
 
-    private Rectangle _playAreaBoundingBox;
-
     private Vector2 _ballPosition, _ballDirection;
 
     private float _ballSpeed;
+
+    // C# properties are the "getters and setters" for C#
+    // They are used to expose data in a controlled way.
+    // PlayAreaBoundingBox is a "read only" property (there is no setter)
+    internal Rectangle PlayAreaBoundingBox
+    {
+        get
+        {
+            return new Rectangle(0, 0, _WindowWidth, _WindowHeight);
+        }
+    }
 
     public Pong()
     {
@@ -38,9 +49,7 @@ public class Pong : Game
         _ballSpeed = 60;
         // set _ballDirection to "45% up and to the left"
         _ballDirection.X = -1;
-        // _ballDirection.Y = -1;
-
-        _playAreaBoundingBox = new Rectangle(0, 0, _WindowWidth, _WindowHeight);
+        _ballDirection.Y = -1;
 
         base.Initialize();
     }
@@ -60,12 +69,17 @@ public class Pong : Game
         _ballPosition += _ballDirection * _ballSpeed * dt;
 
         //bounce the ball off left and right sides
-        if(_ballPosition.X <= _playAreaBoundingBox.Left || 
-            _ballPosition.X + _BallWidthAndHeight >= _playAreaBoundingBox.Right)
+        if(_ballPosition.X <= PlayAreaBoundingBox.Left || 
+            _ballPosition.X + _BallWidthAndHeight >= PlayAreaBoundingBox.Right)
         {
-            _ballDirection *= -1;
+            _ballDirection.X *= -1;
         }
         //in-class exercise: make the ball bounce off of the top and bottom of the play area bounding box
+        if(_ballPosition.Y <= PlayAreaBoundingBox.Top || 
+            _ballPosition.Y + _BallWidthAndHeight >= PlayAreaBoundingBox.Bottom)
+        {
+            _ballDirection.Y *= -1;
+        }
 
         base.Update(gameTime);
     }
