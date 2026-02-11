@@ -51,7 +51,7 @@ public class Pong : Game
         _graphics.ApplyChanges();
 
         _ball = new Ball();
-        _ball.Initialize(new Vector2(150, 195), new Vector2(21, 21), new Vector2(-1, -1), 60);
+        _ball.Initialize(new Vector2(150, 195), new Vector2(21, 21), new Vector2(-1, -1), 60, PlayAreaBoundingBox);
 
         _paddlePosition = new Vector2(690, 198);
         _paddleSpeed = _PaddleSpeed;
@@ -79,20 +79,7 @@ public class Pong : Game
     {
         float dt = (float) gameTime.ElapsedGameTime.TotalSeconds;
 
-        // _ballPosition += _ballDirection * _ballSpeed * dt;
-
-        // //bounce the ball off left and right sides
-        // if(_ballPosition.X <= PlayAreaBoundingBox.Left || 
-        //     _ballPosition.X + _BallWidthAndHeight >= PlayAreaBoundingBox.Right)
-        // {
-        //     _ballDirection.X *= -1;
-        // }
-        // //in-class exercise: make the ball bounce off of the top and bottom of the play area bounding box
-        // if(_ballPosition.Y <= PlayAreaBoundingBox.Top || 
-        //     _ballPosition.Y + _BallWidthAndHeight >= PlayAreaBoundingBox.Bottom)
-        // {
-        //     _ballDirection.Y *= -1;
-        // }
+        _ball.Update(gameTime);
 
         KeyboardState kbState = Keyboard.GetState();
         if(kbState.IsKeyDown(Keys.Up))
