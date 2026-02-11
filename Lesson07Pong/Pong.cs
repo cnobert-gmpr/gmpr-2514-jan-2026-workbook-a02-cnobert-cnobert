@@ -16,8 +16,7 @@ public class Pong : Game
 
     private Texture2D _backgroundTexture, _ballTexture, _paddleTexture;
 
-    private Vector2 _ballPosition, _ballDirection;
-    private float _ballSpeed;
+    private Ball _ball;
 
     private Vector2 _paddlePosition, _paddleDirection, _paddleDimensions;
     private float _paddleSpeed;
@@ -51,11 +50,8 @@ public class Pong : Game
         _graphics.PreferredBackBufferHeight = _WindowHeight;
         _graphics.ApplyChanges();
 
-        _ballPosition = new Vector2(150, 195);
-        _ballSpeed = _BallSpeed;
-        // set _ballDirection to "45% up and to the left"
-        _ballDirection.X = -1;
-        _ballDirection.Y = -1;
+        _ball.Initialize
+            (new Vector2(150, 195), new Vector2(21, 21), new Vector2(-1, -1), 60);
 
         _paddlePosition = new Vector2(690, 198);
         _paddleSpeed = _PaddleSpeed;
@@ -75,28 +71,28 @@ public class Pong : Game
         _spriteBatch = new SpriteBatch(GraphicsDevice);
 
         _backgroundTexture = Content.Load<Texture2D>("Court");
-        _ballTexture = Content.Load<Texture2D>("Ball");
         _paddleTexture = Content.Load<Texture2D>("Paddle");
+        _ball.LoadContent(this.Content);
     }
 
     protected override void Update(GameTime gameTime)
     {
         float dt = (float) gameTime.ElapsedGameTime.TotalSeconds;
 
-        _ballPosition += _ballDirection * _ballSpeed * dt;
+        // _ballPosition += _ballDirection * _ballSpeed * dt;
 
-        //bounce the ball off left and right sides
-        if(_ballPosition.X <= PlayAreaBoundingBox.Left || 
-            _ballPosition.X + _BallWidthAndHeight >= PlayAreaBoundingBox.Right)
-        {
-            _ballDirection.X *= -1;
-        }
-        //in-class exercise: make the ball bounce off of the top and bottom of the play area bounding box
-        if(_ballPosition.Y <= PlayAreaBoundingBox.Top || 
-            _ballPosition.Y + _BallWidthAndHeight >= PlayAreaBoundingBox.Bottom)
-        {
-            _ballDirection.Y *= -1;
-        }
+        // //bounce the ball off left and right sides
+        // if(_ballPosition.X <= PlayAreaBoundingBox.Left || 
+        //     _ballPosition.X + _BallWidthAndHeight >= PlayAreaBoundingBox.Right)
+        // {
+        //     _ballDirection.X *= -1;
+        // }
+        // //in-class exercise: make the ball bounce off of the top and bottom of the play area bounding box
+        // if(_ballPosition.Y <= PlayAreaBoundingBox.Top || 
+        //     _ballPosition.Y + _BallWidthAndHeight >= PlayAreaBoundingBox.Bottom)
+        // {
+        //     _ballDirection.Y *= -1;
+        // }
 
         KeyboardState kbState = Keyboard.GetState();
         if(kbState.IsKeyDown(Keys.Up))
@@ -157,9 +153,8 @@ public class Pong : Game
 
         _spriteBatch.Draw(_backgroundTexture, new Rectangle(0, 0, _WindowWidth, _WindowHeight), Color.White);
 
-        Rectangle ballRectangle = new Rectangle((int) _ballPosition.X, (int) _ballPosition.Y, _BallWidthAndHeight, _BallWidthAndHeight);
-        _spriteBatch.Draw(_ballTexture, ballRectangle, Color.White);
-        
+        _ball.Draw(_spriteBatch);
+
         Rectangle paddleRectangle = new Rectangle((int) _paddlePosition.X, (int) _paddlePosition.Y, (int) _paddleDimensions.X, (int) _paddleDimensions.Y);
         _spriteBatch.Draw(_paddleTexture, paddleRectangle, Color.White);
 
