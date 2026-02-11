@@ -6,15 +6,15 @@ namespace Lesson07Pong;
 
 public class Pong : Game
 {
-    private const int _WindowWidth = 750, _WindowHeight = 450, _BallWidthAndHeight = 21;
+    private const int _WindowWidth = 750, _WindowHeight = 450;
     private const int _PlayAreaEdgeLineWidth = 12;
     private const int _PaddleWidth = 8, _PaddleHeight = 124;
-    private const float _PaddleSpeed = 240, _BallSpeed = 60;
+    private const float _PaddleSpeed = 240;
 
     private GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
 
-    private Texture2D _backgroundTexture, _ballTexture, _paddleTexture;
+    private Texture2D _backgroundTexture, _paddleTexture;
 
     private Ball _ball;
 
@@ -50,8 +50,8 @@ public class Pong : Game
         _graphics.PreferredBackBufferHeight = _WindowHeight;
         _graphics.ApplyChanges();
 
-        _ball.Initialize
-            (new Vector2(150, 195), new Vector2(21, 21), new Vector2(-1, -1), 60);
+        _ball = new Ball();
+        _ball.Initialize(new Vector2(150, 195), new Vector2(21, 21), new Vector2(-1, -1), 60);
 
         _paddlePosition = new Vector2(690, 198);
         _paddleSpeed = _PaddleSpeed;
