@@ -12,6 +12,14 @@ public class Paddle
 
     private Rectangle _playAreaBoundingBox;
 
+    internal Rectangle BoundingBox
+    {
+        get
+        {
+            return new Rectangle(_position.ToPoint(), _dimensions.ToPoint());
+        }
+    }
+
     internal Vector2 Direction 
     { 
         set => _direction = value; 

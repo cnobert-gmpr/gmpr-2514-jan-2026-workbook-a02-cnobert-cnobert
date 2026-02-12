@@ -8,13 +8,11 @@ public class Pong : Game
 {
     private const int _WindowWidth = 750, _WindowHeight = 450;
     private const int _PlayAreaEdgeLineWidth = 12;
-    private const int _PaddleWidth = 8, _PaddleHeight = 124;
-    private const float _PaddleSpeed = 240;
 
     private GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
 
-    private Texture2D _backgroundTexture, _paddleTexture;
+    private Texture2D _backgroundTexture;
 
     private Ball _ball;
 
@@ -40,7 +38,6 @@ public class Pong : Game
 
     protected override void Initialize()
     {
-
         _graphics.PreferredBackBufferWidth = _WindowWidth;
         _graphics.PreferredBackBufferHeight = _WindowHeight;
         _graphics.ApplyChanges();
@@ -60,7 +57,6 @@ public class Pong : Game
     protected override void LoadContent()
     {
         _spriteBatch = new SpriteBatch(GraphicsDevice);
-
         _backgroundTexture = Content.Load<Texture2D>("Court");
         _ball.LoadContent(this.Content);
         _paddleRight.LoadContent(Content);
@@ -69,10 +65,7 @@ public class Pong : Game
 
     protected override void Update(GameTime gameTime)
     {
-        float dt = (float) gameTime.ElapsedGameTime.TotalSeconds;
-
-        _ball.Update(gameTime);
-
+        #region keyboard input
         KeyboardState kbState = Keyboard.GetState();
         if(kbState.IsKeyDown(Keys.Up)) 
             _paddleRight.Direction = new Vector2(0, -1);
@@ -81,16 +74,19 @@ public class Pong : Game
         else
             _paddleRight.Direction = Vector2.Zero;
 
-        _paddleRight.Update(gameTime);
-
         if(kbState.IsKeyDown(Keys.W)) 
             _paddleLeft.Direction = new Vector2(0, -1);
         else if(kbState.IsKeyDown(Keys.S))
             _paddleLeft.Direction = new Vector2(0, 1);
         else
             _paddleLeft.Direction = Vector2.Zero;
+        #endregion
+        _ball.Update(gameTime);
+        _paddleRight.Update(gameTime);
         _paddleLeft.Update(gameTime);
-        
+
+        _ball.ProcessCollision(_paddleRight.BoundingBox);
+
         base.Update(gameTime);
     }
 
