@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-namespace Lesson07Pong;
+namespace Lesson07Pong_Viby;
 
 public class Pong : Game
 {
@@ -43,7 +43,10 @@ public class Pong : Game
         _graphics.ApplyChanges();
 
         _ball = new Ball();
-        _ball.Initialize(new Vector2(150, 195), new Vector2(21, 21), new Vector2(-1, -1), 60, PlayAreaBoundingBox);
+
+        // === CHANGE START: direction will be normalized in Ball.Initialize ===
+        _ball.Initialize(new Vector2(150, 195), new Vector2(21, 21), new Vector2(-1, -1), 160, PlayAreaBoundingBox);
+        // === CHANGE END ===
 
         _paddleRight = new Paddle();
         _paddleRight.Initialize(new Vector2(690, 198), new Vector2(8, 124), 240, PlayAreaBoundingBox);
@@ -84,12 +87,9 @@ public class Pong : Game
         _ball.Update(gameTime);
         _paddleRight.Update(gameTime);
         _paddleLeft.Update(gameTime);
-        _ball.ProcessCollision(_paddleRight.BoundingBox;
-        
-        // if(_ball.ProcessCollision(_paddleRight.BoundingBox))
-        // {
-            // _paddleRight.Flash();
-        // }
+
+        _ball.ProcessCollision(_paddleRight);
+        _ball.ProcessCollision(_paddleLeft);
 
         base.Update(gameTime);
     }
@@ -105,7 +105,7 @@ public class Pong : Game
         _ball.Draw(_spriteBatch);
         _paddleRight.Draw(_spriteBatch);
         _paddleLeft.Draw(_spriteBatch);
-        
+
         _spriteBatch.End();
 
         base.Draw(gameTime);
