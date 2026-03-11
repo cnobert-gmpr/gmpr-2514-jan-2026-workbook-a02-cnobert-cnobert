@@ -24,6 +24,12 @@ public class MosquitoAttackGame : Game
     private GameState _gameState;
 
     Cannon _cannon;
+    Mosquito _mosquito;
+    
+    private Rectangle BoundingBox
+    {
+        get { return new Rectangle(0, 0, _WindowWidth, _WindowHeight); }
+    }
 
     public MosquitoAttackGame()
     {
@@ -41,6 +47,9 @@ public class MosquitoAttackGame : Game
         _cannon = new Cannon();
         _cannon.Initialize(new Vector2(50, 325), 150);
 
+        _mosquito = new Mosquito();
+        _mosquito.Initialize(new Vector2(50, 20), 200, new Vector2(-1, 0), BoundingBox);
+
         _gameState = GameState.Playing;
 
         base.Initialize();
@@ -52,9 +61,7 @@ public class MosquitoAttackGame : Game
         _background = Content.Load<Texture2D>("Background");
 
         _cannon.LoadContent(Content);
-
-        // students, do NOT comment out the line below
-        //_font = Content.Load<SpriteFont>("SystemArialFont");
+        _mosquito.LoadContent(Content);
 
         #region students, don't look here
         //MacOS ONLY
@@ -84,6 +91,7 @@ public class MosquitoAttackGame : Game
                 }
                 #endregion
                 _cannon.Update(gameTime);
+                _mosquito.Update(gameTime);
                 break;
             case GameState.Paused:
                 if(Pressed(Keys.P))
@@ -109,11 +117,13 @@ public class MosquitoAttackGame : Game
             case GameState.Playing:
                 _spriteBatch.Draw(_background, Vector2.Zero, Color.White);
                 _cannon.Draw(_spriteBatch);
+                _mosquito.Draw(_spriteBatch);
                 break;
             case GameState.Paused:
                 _spriteBatch.Draw(_background, Vector2.Zero, Color.Silver);
                 _cannon.Draw(_spriteBatch);
                 _spriteBatch.DrawString(_font, _message, new Vector2(10, 135), Color.White);
+                _mosquito.Draw(_spriteBatch);
                 break;
             case GameState.Over:
                 break;
