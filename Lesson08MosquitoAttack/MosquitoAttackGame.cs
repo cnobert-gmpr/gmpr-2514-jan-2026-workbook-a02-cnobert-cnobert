@@ -77,7 +77,10 @@ public class MosquitoAttackGame : Game
         _background = Content.Load<Texture2D>("Background");
 
         _cannon.LoadContent(Content);
-        _mosquito.LoadContent(Content);
+        foreach(Mosquito mosquito in _mosquitoes)
+        {
+            mosquito.LoadContent(Content);
+        }
 
         #region students, don't look here
         //MacOS ONLY
@@ -107,7 +110,10 @@ public class MosquitoAttackGame : Game
                 }
                 #endregion
                 _cannon.Update(gameTime);
-                _mosquito.Update(gameTime);
+                foreach(Mosquito mosquito in _mosquitoes)
+                {
+                    mosquito.Update(gameTime);
+                }
                 break;
             case GameState.Paused:
                 if(Pressed(Keys.P))
@@ -133,13 +139,19 @@ public class MosquitoAttackGame : Game
             case GameState.Playing:
                 _spriteBatch.Draw(_background, Vector2.Zero, Color.White);
                 _cannon.Draw(_spriteBatch);
-                _mosquito.Draw(_spriteBatch);
+                foreach(Mosquito mosquito in _mosquitoes)
+                {
+                    mosquito.Draw(_spriteBatch);
+                }
                 break;
             case GameState.Paused:
                 _spriteBatch.Draw(_background, Vector2.Zero, Color.Silver);
                 _cannon.Draw(_spriteBatch);
                 _spriteBatch.DrawString(_font, _message, new Vector2(10, 135), Color.White);
-                _mosquito.Draw(_spriteBatch);
+                foreach(Mosquito mosquito in _mosquitoes)
+                {
+                    mosquito.Draw(_spriteBatch);
+                }
                 break;
             case GameState.Over:
                 break;
