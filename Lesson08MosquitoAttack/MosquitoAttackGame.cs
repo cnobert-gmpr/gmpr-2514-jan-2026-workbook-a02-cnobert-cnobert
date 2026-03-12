@@ -43,7 +43,7 @@ public class MosquitoAttackGame : Game
         _graphics.ApplyChanges();
 
         _cannon = new Cannon();
-        _cannon.Initialize(new Vector2(50, 325), 150);
+        _cannon.Initialize(new Vector2(50, 325), 150, BoundingBox);
 
         _mosquitoes = new Mosquito[_NumMosquitoes];
         for(int c = 0; c < _NumMosquitoes; c++)
@@ -63,9 +63,6 @@ public class MosquitoAttackGame : Game
             mosquito.Initialize(new Vector2(xPosition, yPosition), speed, 
                                     new Vector2(direction, 0), BoundingBox);
         }
-
-        
-
         _gameState = GameState.Playing;
 
         base.Initialize();
@@ -102,11 +99,14 @@ public class MosquitoAttackGame : Game
                     _cannon.Direction = new Vector2(1, 0);
                 else
                     _cannon.Direction = Vector2.Zero;
-
                 if(Pressed(Keys.P))
                 {
                     _gameState = GameState.Paused;
                     _message = "Game Paused, press P to start playing again.";
+                }
+                if(Pressed(Keys.Space))
+                {
+                    _cannon.Shoot();
                 }
                 #endregion
                 _cannon.Update(gameTime);
@@ -160,6 +160,7 @@ public class MosquitoAttackGame : Game
         _spriteBatch.End();
         base.Draw(gameTime);
     }
+    
     private bool Pressed(Keys key)
     {
         return _kbCurrentState.IsKeyDown(key) && _kbPreviousState.IsKeyUp(key);
