@@ -21,11 +21,11 @@ public class CannonBall
         get => new Rectangle((int)_position.X, (int)_position.Y, _texture.Width, _texture.Height);
     }
 
-    internal void Initialize(Vector2 position, float speed, Vector2 direction, Rectangle gameBoundingBox)
+    internal void Initialize(float speed, Rectangle gameBoundingBox)
     {
-        _position = position;
+        _position = Vector2.Zero;
+        _direction = Vector2.Zero;
         _speed = speed;
-        _direction = direction;
         _gameBoundingBox = gameBoundingBox;
     }
     internal void LoadContent(ContentManager content)

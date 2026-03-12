@@ -35,7 +35,7 @@ public class Cannon
         _speed = speed;
         _gameBoundingBox = gameBoundingBox;
         _cBall = new CannonBall();
-        _cBall.Initialize(_position, 50, new Vector2(0, -1), _gameBoundingBox);
+        _cBall.Initialize(50, _gameBoundingBox);
 
     }
     internal void LoadContent(ContentManager content)
