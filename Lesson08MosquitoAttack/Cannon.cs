@@ -76,6 +76,8 @@ public class Cannon
     internal void Shoot()
     {
         float cannonBallPositionY = BoundingBox.Top - _cBall.BoundingBox.Height;
-        _cBall.Launch(_position, new Vector2(0, -1));
+        float cannonBallPositionX = BoundingBox.Center.X - _cBall.BoundingBox.Width / 2;
+        Vector2 cannonBallPosition = new Vector2(cannonBallPositionX, cannonBallPositionY);
+        _cBall.Launch(cannonBallPosition, new Vector2(0, -1));
     }
 }
