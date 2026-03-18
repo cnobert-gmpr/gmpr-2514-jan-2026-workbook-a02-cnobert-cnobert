@@ -6,6 +6,8 @@ namespace Lesson08MosquitoAttack;
 
 public class Cannon
 {
+    private const int _NumCannonBalls = 10;
+
     private SimpleAnimation _animation;
     private Vector2 _position, _direction;
     private Point _dimensions;
@@ -13,7 +15,7 @@ public class Cannon
 
     private Rectangle _gameBoundingBox;
 
-    private CannonBall _cBall;
+    private CannonBall[] _cBalls;
 
     internal Vector2 Direction
     {
@@ -47,9 +49,13 @@ public class Cannon
         _position = position;
         _speed = speed;
         _gameBoundingBox = gameBoundingBox;
-        _cBall = new CannonBall();
-        _cBall.Initialize(50, _gameBoundingBox);
 
+        _cBalls = new CannonBall[_NumCannonBalls];
+        for(int c = 0; c < _NumCannonBalls; c++)
+        {
+            _cBalls[c] = new CannonBall();
+            _cBalls[c].Initialize(50, _gameBoundingBox);
+        }
     }
     internal void LoadContent(ContentManager content)
     {
@@ -57,7 +63,8 @@ public class Cannon
         _dimensions = new Point(texture.Width / 4, texture.Height);
         _animation = new SimpleAnimation(texture, _dimensions.X, _dimensions.Y, 4, 2);
 
-        _cBall.LoadContent(content);
+        foreach(CannonBall c in _cBalls)
+            c.LoadContent(content);
     }
     internal void Update(GameTime gameTime)
     {
@@ -65,19 +72,28 @@ public class Cannon
         _position += _direction * _speed * dt;
         if(_direction != Vector2.Zero)
             _animation.Update(gameTime);
-        _cBall.Update(gameTime);
+        foreach(CannonBall c in _cBalls)
+            c.Update(gameTime);
     }
     internal void Draw(SpriteBatch spriteBatch)
     {
         if(_animation != null)
             _animation.Draw(spriteBatch, _position, SpriteEffects.None);
-        _cBall.Draw(spriteBatch);
+        foreach(CannonBall c in _cBalls)
+            c.Draw(spriteBatch);
     }
     internal void Shoot()
     {
-        float cannonBallPositionY = BoundingBox.Top - _cBall.BoundingBox.Height;
-        float cannonBallPositionX = BoundingBox.Center.X - _cBall.BoundingBox.Width / 2;
-        Vector2 cannonBallPosition = new Vector2(cannonBallPositionX, cannonBallPositionY);
-        _cBall.Launch(cannonBallPosition, new Vector2(0, -1));
+        foreach(CannonBall c in _cBalls)
+        {
+            if(c.Launchable)
+            {
+                float cannonBallPositionY = BoundingBox.Top - c.BoundingBox.Height;
+                float cannonBallPositionX = BoundingBox.Center.X - c.BoundingBox.Width / 2;
+                Vector2 cannonBallPosition = new Vector2(cannonBallPositionX, cannonBallPositionY);
+                c.Launch(cannonBallPosition, new Vector2(0, -1));
+                return; //break;
+            }
+        }
     }
 }

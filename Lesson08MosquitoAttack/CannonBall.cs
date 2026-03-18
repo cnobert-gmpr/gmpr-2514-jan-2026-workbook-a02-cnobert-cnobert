@@ -21,6 +21,8 @@ public class CannonBall
         get => new Rectangle((int)_position.X, (int)_position.Y, _texture.Width, _texture.Height);
     }
 
+    internal bool Launchable { get => _state == State.NotFlying; }
+
     internal void Initialize(float speed, Rectangle gameBoundingBox)
     {
         _position = Vector2.Zero;
