@@ -57,7 +57,7 @@ public class CannonBall
         }
         
     }
-    internal void Shoot(Vector2 position, Vector2 direction)
+    internal void Launch(Vector2 position, Vector2 direction)
     {
         _position = position;
         _direction = direction;

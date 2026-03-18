@@ -29,6 +29,19 @@ public class Cannon
         }
     }
 
+    internal Rectangle BoundingBox
+    {
+        get
+        {
+            return new Rectangle(
+                (int)_position.X,
+                (int)_position.Y,
+                (int)_animation.FrameDimensions.X,
+                (int)_animation.FrameDimensions.Y
+            );
+        }
+    }
+
     internal void Initialize(Vector2 position, float speed, Rectangle gameBoundingBox)
     {
         _position = position;
@@ -62,6 +75,7 @@ public class Cannon
     }
     internal void Shoot()
     {
-        _cBall.Shoot(_position, new Vector2(0, -1));
+        float cannonBallPositionY = BoundingBox.Top - _cBall.BoundingBox.Height;
+        _cBall.Launch(_position, new Vector2(0, -1));
     }
 }
