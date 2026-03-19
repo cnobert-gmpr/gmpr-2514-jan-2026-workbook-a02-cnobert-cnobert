@@ -6,13 +6,16 @@ namespace Lesson08MosquitoAttack;
 
 public class Mosquito
 {
-    private SimpleAnimation _animation;
+    private SimpleAnimation _animationAlive, _animationPoofing;
 
     private Vector2 _position;
     private Vector2 _direction;
     private float _speed;
 
     private Rectangle _gameBoundingBox;
+
+    private enum State { Alive, Poofing, Dead }
+    private State _state;
 
     internal Rectangle BoundingBox
     {
@@ -21,11 +24,13 @@ public class Mosquito
             return new Rectangle(
                 (int)_position.X,
                 (int)_position.Y,
-                (int)_animation.FrameDimensions.X,
-                (int)_animation.FrameDimensions.Y
+                (int)_animationAlive.FrameDimensions.X,
+                (int)_animationAlive.FrameDimensions.Y
             );
         }
     }
+
+    internal bool Alive { get => _state == State.Alive; }
 
     internal void Initialize(Vector2 position, float speed, Vector2 direction, Rectangle gameBoundingBox)
     {
@@ -33,33 +38,68 @@ public class Mosquito
         _speed = speed;
         _direction = direction;
         _gameBoundingBox = gameBoundingBox;
+        _state = State.Alive;
     }
 
     internal void LoadContent(ContentManager content)
     {
         Texture2D texture = content.Load<Texture2D>("Mosquito");
 
-        _animation = new SimpleAnimation(texture, texture.Width / 11, texture.Height, 11, 8f);
-        _animation.Paused = false;
+        _animationAlive = 
+            new SimpleAnimation(texture, texture.Width / 11, texture.Height, 11, 8f);
+        _animationAlive.Paused = false;
+
+        texture = content.Load<Texture2D>("Poof");
+        _animationPoofing = 
+            new SimpleAnimation(texture, texture.Width / 8, texture.Height, 8, 4);
     }
 
     internal void Update(GameTime gameTime)
     {
         float dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
-        
-        _position += _direction * _speed * dt;
-
-        if(BoundingBox.Left < _gameBoundingBox.Left || BoundingBox.Right > _gameBoundingBox.Right)
+        switch(_state)
         {
-            _direction.X *= -1;
+            case State.Alive:
+                _position += _direction * _speed * dt;
+                if(BoundingBox.Left < _gameBoundingBox.Left || BoundingBox.Right > _gameBoundingBox.Right)
+                {
+                    _direction.X *= -1;
+                }
+                _animationAlive.Update(gameTime);
+                break;
+            case State.Poofing:
+                _animationPoofing.Update(gameTime);
+                if(_animationPoofing.DonePlayingOnce)
+                {
+                    _state = State.Dead;
+                }
+                break;
+            case State.Dead:
+                break;
         }
-
-        _animation.Update(gameTime);
     }
 
     internal void Draw(SpriteBatch spriteBatch)
     {
-        _animation.Draw(spriteBatch, _position, SpriteEffects.None);
+        switch(_state)
+        {
+            case State.Alive:
+                _animationAlive.Draw(spriteBatch, _position, SpriteEffects.None);
+                break;
+            case State.Poofing:
+                _animationPoofing.Draw(spriteBatch, _position, SpriteEffects.None);
+                break;
+            case State.Dead:
+                break;
+        }
     }
 
+    internal void Die()
+    {
+        if(Alive)
+        {
+            _state = State.Poofing;
+            _animationPoofing.Looping = false;
+        }
+    }
 }

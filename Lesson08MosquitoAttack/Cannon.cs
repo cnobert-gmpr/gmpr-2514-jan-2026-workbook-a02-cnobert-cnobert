@@ -96,4 +96,16 @@ public class Cannon
             }
         }
     }
+    internal bool ProcessCollision(Rectangle boundingBox)
+    {
+        foreach(CannonBall c in _cBalls)
+        {
+            if(c.ProcessCollision(boundingBox))
+            {
+                // game rule: only one cannonBall can hit something each call to update
+                return true;
+            }
+        }
+        return false;
+    }
 }
