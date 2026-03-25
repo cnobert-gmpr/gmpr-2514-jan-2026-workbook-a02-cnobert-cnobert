@@ -16,8 +16,8 @@ public class CannonBall
 
     private List<Vector2> _trailPositions;
     private float _trailTimer;
-    private const float _TrailSpawnInterval = 0.03f;
-    private const int _MaxTrailPositions = 12;
+    private const float _TrailSpawnInterval = 0.1f;
+    private const int _MaxTrailPositions = 8;
 
     private enum State { Flying, NotFlying}
     private State _state = State.NotFlying;
@@ -132,6 +132,7 @@ public class CannonBall
         if(_state == State.Flying && BoundingBox.Intersects(otherBoundingBox))
         {
             _state = State.NotFlying;
+            _trailPositions.Clear();
             return true;
         }
         return false;
