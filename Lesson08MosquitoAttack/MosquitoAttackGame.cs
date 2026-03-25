@@ -147,6 +147,7 @@ public class MosquitoAttackGame : Game
                 {
                     mosquito.Draw(_spriteBatch);
                 }
+                
                 break;
             case GameState.Paused:
                 _spriteBatch.Draw(_background, Vector2.Zero, Color.Silver);
