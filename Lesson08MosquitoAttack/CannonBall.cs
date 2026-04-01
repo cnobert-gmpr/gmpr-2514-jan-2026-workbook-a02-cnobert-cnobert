@@ -27,11 +27,13 @@ public class CannonBall : Projectile
         _trailPositions = new List<Vector2>();
         _trailTimer = 0;
     }
-    internal void LoadContent(ContentManager content)
+    
+    internal override void LoadContent(ContentManager content)
     {
         _texture = content.Load<Texture2D>("CannonBall");
     }
-    internal void Update(GameTime gameTime)
+    
+    internal override void Update(GameTime gameTime)
     {
         float dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
@@ -39,7 +41,6 @@ public class CannonBall : Projectile
         {
             case State.Flying:
                 _position += _direction * _speed * dt;
-
                 _trailTimer += dt;
                 if(_trailTimer >= _TrailSpawnInterval)
                 {
@@ -63,7 +64,8 @@ public class CannonBall : Projectile
                 break;
         }
     }
-    internal void Draw(SpriteBatch spriteBatch)
+    
+    internal override void Draw(SpriteBatch spriteBatch)
     {
         switch(_state)
         {
@@ -105,17 +107,9 @@ public class CannonBall : Projectile
         }
     }
 
-    internal void Launch(Vector2 position, Vector2 direction)
-    {
-        if(_state == State.NotFlying)
-        {
-            _position = position;
-            _direction = direction;
-            _state = State.Flying;
-        }
-    }
 
-    internal bool ProcessCollision(Rectangle otherBoundingBox)
+
+    internal override bool ProcessCollision(Rectangle otherBoundingBox)
     {
         if(_state == State.Flying && BoundingBox.Intersects(otherBoundingBox))
         {
