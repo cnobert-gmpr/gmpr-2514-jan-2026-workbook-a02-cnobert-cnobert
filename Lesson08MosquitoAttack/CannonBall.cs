@@ -5,36 +5,24 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Lesson08MosquitoAttack;
 
-public class CannonBall
+public class CannonBall : Projectile
 {
     private Texture2D _texture;
-    private Vector2 _position;
-    private Vector2 _direction;
-    private float _speed;
-
-    private Rectangle _gameBoundingBox;
 
     private List<Vector2> _trailPositions;
     private float _trailTimer;
     private const float _TrailSpawnInterval = 0.1f;
     private const int _MaxTrailPositions = 8;
 
-    private enum State { Flying, NotFlying}
-    private State _state = State.NotFlying;
-
     internal Rectangle BoundingBox
     {
         get => new Rectangle((int)_position.X, (int)_position.Y, _texture.Width, _texture.Height);
     }
 
-    internal bool Launchable { get => _state == State.NotFlying; }
-
-    internal void Initialize(float speed, Rectangle gameBoundingBox)
+    //"override" means "I'm hiding the parent method"
+    internal override void Initialize(float speed, Rectangle gameBoundingBox)
     {
-        _position = Vector2.Zero;
-        _direction = Vector2.Zero;
-        _speed = speed;
-        _gameBoundingBox = gameBoundingBox;
+        base.Initialize(speed, gameBoundingBox);
 
         _trailPositions = new List<Vector2>();
         _trailTimer = 0;

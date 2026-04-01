@@ -32,6 +32,7 @@ public class FireBall
         _direction = Vector2.Zero;
         _speed = speed;
         _gameBoundingBox = gameBoundingBox;
+        
         _dimensions = new Point(5, 17);
     }
 
