@@ -107,8 +107,6 @@ public class CannonBall : Projectile
         }
     }
 
-
-
     internal override bool ProcessCollision(Rectangle otherBoundingBox)
     {
         if(_state == State.Flying && BoundingBox.Intersects(otherBoundingBox))
