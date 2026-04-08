@@ -14,16 +14,14 @@ public class CannonBall : Projectile
     private const float _TrailSpawnInterval = 0.1f;
     private const int _MaxTrailPositions = 8;
 
-    internal Rectangle BoundingBox
-    {
-        get => new Rectangle((int)_position.X, (int)_position.Y, _texture.Width, _texture.Height);
-    }
+    
 
     //"override" means "I'm hiding the parent method"
     internal override void Initialize(float speed, Rectangle gameBoundingBox)
     {
         base.Initialize(speed, gameBoundingBox);
 
+        _dimensions = new Point(4, 4);
         _trailPositions = new List<Vector2>();
         _trailTimer = 0;
     }
