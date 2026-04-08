@@ -51,17 +51,4 @@ public class FireBall : Projectile
                 break;
         }
     }
-
-
-    internal override bool ProcessCollision(Rectangle boundingBox)
-    {
-        bool returnValue = false;
-        if(_state == State.Flying && BoundingBox.Intersects(boundingBox))
-        {
-            returnValue = true;
-            _state = State.NotFlying;
-        }
-        return returnValue;
-    }
-
 }

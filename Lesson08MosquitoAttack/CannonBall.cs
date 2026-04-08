@@ -13,9 +13,7 @@ public class CannonBall : Projectile
     private float _trailTimer;
     private const float _TrailSpawnInterval = 0.1f;
     private const int _MaxTrailPositions = 8;
-
     
-
     //"override" means "I'm hiding the parent method"
     internal override void Initialize(float speed, Rectangle gameBoundingBox)
     {
@@ -107,15 +105,12 @@ public class CannonBall : Projectile
 
     internal override bool ProcessCollision(Rectangle otherBoundingBox)
     {
-        if(_state == State.Flying && BoundingBox.Intersects(otherBoundingBox))
+        if(base.ProcessCollision(otherBoundingBox))
         {
-            _state = State.NotFlying;
             _trailPositions.Clear();
             return true;
         }
         return false;
-
-        // return BoundingBox.Intersects(otherBoundingBox);
     }
 
 }

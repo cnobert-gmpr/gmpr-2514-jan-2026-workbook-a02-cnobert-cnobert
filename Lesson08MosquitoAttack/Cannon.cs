@@ -6,7 +6,7 @@ namespace Lesson08MosquitoAttack;
 
 public class Cannon
 {
-    private const int _NumCannonBalls = 10;
+    private const int _NumProjectiles = 5;
 
     private SimpleAnimation _animation;
     private Vector2 _position, _direction;
@@ -15,7 +15,7 @@ public class Cannon
 
     private Rectangle _gameBoundingBox;
 
-    private CannonBall[] _cBalls;
+    private Projectile[] _projectiles;
 
     internal Vector2 Direction
     {
@@ -50,11 +50,16 @@ public class Cannon
         _speed = speed;
         _gameBoundingBox = gameBoundingBox;
 
-        _cBalls = new CannonBall[_NumCannonBalls];
-        for(int c = 0; c < _NumCannonBalls; c++)
+        _projectiles = new Projectile[_NumProjectiles];
+        _projectiles[0] = new CannonBall();
+        _projectiles[1] = new FireBall();
+        _projectiles[2] = new CannonBall();
+        _projectiles[3] = new FireBall();
+        _projectiles[4] = new CannonBall();
+
+        for(int c = 0; c < _NumProjectiles; c++)
         {
-            _cBalls[c] = new CannonBall();
-            _cBalls[c].Initialize(50, _gameBoundingBox);
+            _projectiles[c].Initialize(50, _gameBoundingBox);
         }
     }
     internal void LoadContent(ContentManager content)
@@ -63,8 +68,8 @@ public class Cannon
         _dimensions = new Point(texture.Width / 4, texture.Height);
         _animation = new SimpleAnimation(texture, _dimensions.X, _dimensions.Y, 4, 2);
 
-        foreach(CannonBall c in _cBalls)
-            c.LoadContent(content);
+        foreach(Projectile p in _projectiles)
+            p.LoadContent(content);
     }
     internal void Update(GameTime gameTime)
     {
@@ -72,35 +77,35 @@ public class Cannon
         _position += _direction * _speed * dt;
         if(_direction != Vector2.Zero)
             _animation.Update(gameTime);
-        foreach(CannonBall c in _cBalls)
-            c.Update(gameTime);
+        foreach(Projectile p in _projectiles)
+            p.Update(gameTime);
     }
     internal void Draw(SpriteBatch spriteBatch)
     {
         if(_animation != null)
             _animation.Draw(spriteBatch, _position, SpriteEffects.None);
-        foreach(CannonBall c in _cBalls)
-            c.Draw(spriteBatch);
+        foreach(Projectile p in _projectiles)
+            p.Draw(spriteBatch);
     }
     internal void Shoot()
     {
-        foreach(CannonBall c in _cBalls)
+        foreach(Projectile p in _projectiles)
         {
-            if(c.Launchable)
+            if(p.Launchable)
             {
-                float cannonBallPositionY = BoundingBox.Top - c.BoundingBox.Height;
-                float cannonBallPositionX = BoundingBox.Center.X - c.BoundingBox.Width / 2;
-                Vector2 cannonBallPosition = new Vector2(cannonBallPositionX, cannonBallPositionY);
-                c.Launch(cannonBallPosition, new Vector2(0, -1));
+                float projectilePositionY = BoundingBox.Top - p.BoundingBox.Height;
+                float projectilePositionX = BoundingBox.Center.X - p.BoundingBox.Width / 2;
+                Vector2 projectilePosition = new Vector2(projectilePositionX, projectilePositionY);
+                p.Launch(projectilePosition, new Vector2(0, -1));
                 return; //break;
             }
         }
     }
     internal bool ProcessCollision(Rectangle boundingBox)
     {
-        foreach(CannonBall c in _cBalls)
+        foreach(Projectile p in _projectiles)
         {
-            if(c.ProcessCollision(boundingBox))
+            if(p.ProcessCollision(boundingBox))
             {
                 // game rule: only one cannonBall can hit something each call to update
                 return true;

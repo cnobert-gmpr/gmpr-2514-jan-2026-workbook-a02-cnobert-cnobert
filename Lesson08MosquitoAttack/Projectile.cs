@@ -19,7 +19,7 @@ public abstract class Projectile
     {
         get => new Rectangle((int)_position.X, (int)_position.Y, _dimensions.X, _dimensions.Y);
     }
-    
+
     internal bool Launchable { get => _state == State.NotFlying; }
 
      //"virtual" means "my children MAY override this method, but they don't have to"
@@ -47,5 +47,14 @@ public abstract class Projectile
         }
     }
 
-    internal abstract bool ProcessCollision(Rectangle otherBoundingBox);
+    internal virtual bool ProcessCollision(Rectangle boundingBox)
+    {
+        bool returnValue = false;
+        if(_state == State.Flying && BoundingBox.Intersects(boundingBox))
+        {
+            returnValue = true;
+            _state = State.NotFlying;
+        }
+        return returnValue;
+    }
 }
