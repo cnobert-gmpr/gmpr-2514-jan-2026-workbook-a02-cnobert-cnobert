@@ -5,14 +5,9 @@ using System;
 
 namespace Lesson08MosquitoAttack;
 
-public class Mosquito
+public class Mosquito : Actor
 {
     private const int NumFireBalls = 10, UpperRandomFiringRange = 160;
-    private SimpleAnimation _animationAlive, _animationPoofing;
-
-    private Vector2 _position;
-    private Vector2 _direction;
-    private float _speed;
 
     private Rectangle _gameBoundingBox;
 
@@ -21,19 +16,6 @@ public class Mosquito
 
     private FireBall[] _fireBalls;
     private Random _rng;
-
-    internal Rectangle BoundingBox
-    {
-        get
-        {
-            return new Rectangle(
-                (int)_position.X,
-                (int)_position.Y,
-                (int)_animationAlive.FrameDimensions.X,
-                (int)_animationAlive.FrameDimensions.Y
-            );
-        }
-    }
 
     internal bool Alive { get => _state == State.Alive; }
 
